@@ -1,39 +1,31 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Schema;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ShurikenController : MonoBehaviour
 {
-    float speed = 0;
-    float rotateSpeed = 0;
-    Vector3 mouseStart;
-    Vector3 mouseEnd;
-    void Start()
+    public float movePower;
+    public bool isMove;
+    float yMin = 0f, yMax = 1920f;
+
+    public void Update()
     {
+        if (isMove)
+        {            
+            //z축으로 회전한다
+            transform.Rotate(0, 0, -1f);
 
-    }
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            mouseStart = Input.mousePosition;
-
+            //y축으로 이동합니다.
+            transform.Translate(0, movePower, 0, Space.World);
+                        
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            mouseEnd = Input.mousePosition;
-            if (mouseEnd.y - mouseStart.y > 0)
-            {
-                rotateSpeed = 1;
-                speed = 0.01f;
-            }
-
-        }
-
-        this.transform.Rotate(0, 0, rotateSpeed);
-        this.transform.Translate(0,speed,0, Space.World);
+        float yPos = Mathf.Clamp(movePower, yMin, yMax);
+        movePower *= 0.97f;
+        
         
     }
 }
